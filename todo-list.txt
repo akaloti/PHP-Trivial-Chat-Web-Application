@@ -2,8 +2,6 @@ Next steps:
 -
 
 Things to implement:
--user can register
-    --consider what happens if username is too long
 -user can sign in
 -other logged in users are notified of when someone logged in and of
 when that newly logged in person last sent a message (unless he's a
