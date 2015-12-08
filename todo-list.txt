@@ -1,0 +1,20 @@
+Next steps:
+-
+
+Things to implement:
+-database for usernames and passwords
+-user can register
+    --must have unique username
+    --consider what happens if username is too long
+-user can sign in
+-other logged in users are notified of when someone logged in and of
+when that newly logged in person last sent a message (unless he's a
+new user)
+-database to store chat messages
+-user must sign in to go to chat
+-user can type messages and submit them
+    --upon submission, that user's last message sent time is updated
+-upon signing in, user is then able to receive messages sent by other
+clients to the server
+-user can log out
+-nice looking text field and submit button
