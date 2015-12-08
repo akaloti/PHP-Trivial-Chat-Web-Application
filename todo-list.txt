@@ -3,7 +3,6 @@ Next steps:
 
 Things to implement:
 -user can register
-    --must have unique username
     --consider what happens if username is too long
 -user can sign in
 -other logged in users are notified of when someone logged in and of
@@ -17,3 +16,6 @@ new user)
 clients to the server
 -user can log out
 -nice looking text field and submit button
+
+Considerable:
+-look into better password hashing options
