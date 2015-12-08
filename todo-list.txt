@@ -2,7 +2,6 @@ Next steps:
 -
 
 Things to implement:
--database for usernames and passwords
 -user can register
     --must have unique username
     --consider what happens if username is too long
