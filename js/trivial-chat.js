@@ -1,8 +1,45 @@
 "use strict";
 
-$(document).ready(function() {
-    $("#chat-room").hide(0);
+var username;
 
+$(document).ready(function() {
+    showAppropriateMenu();
+    setUpMainMenuEventHandlers();
+});
+
+/**
+ * @post based on session state, either the login menu or the
+ * resume menu has been shown
+ */
+function showAppropriateMenu() {
+    $.getJSON(
+        "session.php",
+        {
+            name: "teehee",
+        },
+        function(json) {
+            if (json.scriptError) {
+                var message = json.scriptErrorMessage;
+                alert(message);
+                console.log(message);
+            }
+            else if (json.connected) {
+                username = json.name;
+                $("#session-name").html(username);
+                $("#session").show(0);
+            }
+            else {
+                $("#login").show(0);
+            }
+        }
+    );
+}
+
+/**
+ * @post event handlers for the three menus (including the hidden ones)
+ * have been set up
+ */
+function setUpMainMenuEventHandlers() {
     $("#create-create").click(function(e) {
         var username = $("#create-name").val();
         var password = $("#create-pw").val();
@@ -23,8 +60,7 @@ $(document).ready(function() {
                 },
                 function(json, status) {
                     if (json.success) {
-                        $("#beginning").hide(0);
-                        $("#chat-room").show(0);
+                        takeUserToChatRoom();
                     }
                     else {
                         alert("Name already taken!");
@@ -46,8 +82,7 @@ $(document).ready(function() {
             },
             function(json, status) {
                 if (json.success) {
-                    $("#beginning").hide(0);
-                    $("#chat-room").show(0);
+                    takeUserToChatRoom();
                 }
                 else if (json.scriptError) {
                     // Report the error from the PHP script
@@ -62,4 +97,12 @@ $(document).ready(function() {
             }
         );
     });
-});
+}
+
+/**
+ * @post main menu has been hidden; chat room has been shown
+ */
+function takeUserToChatRoom() {
+    $(".screen").hide(0);
+    $("#chat-room").show(0);
+}
