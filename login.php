@@ -3,33 +3,32 @@
 
     include 'dbconnect.php';
 
-    // JSON object to be returned to $.getJSON calling this file
-    $json = array('success'=>false);
-
     $name = $_GET['name'];
     $pw = $_GET['pw'];
+
+    // JSON object to be returned to $.getJSON calling this file
+    $json = array('success'=>false, 'scriptError'=>false);
 
     if (isset($name) && isset($pw)) {
         try {
             $hash = hash('md5', $pw);
-            $queryStr = 'SELECT * FROM users WHERE name = "'.$name.'"';
+            $queryStr = 'SELECT * FROM users WHERE name = "'.$name.
+                '" AND password = "'.$hash.'"';
             $query = $db->prepare($queryStr);
             $query->execute();
             $result = $query->fetch();
-            if (!$result) {
-                $queryStr = 'INSERT INTO users (name, password)
-                    VALUES("'.$name.'", "'.$hash.'")';
-                $db->query($queryStr);
+            if ($result) {
+                $json['success'] = true;
 
                 $_SESSION['name'] = $name;
-
-                $json['success'] = true;
             }
 
             $query->closeCursor();
         }
         catch (PDOException $e) {
-            echo $e->getMessage();
+            // Send the error message back to the webpage
+            $json['scriptError'] = true;
+            $json['scriptErrorMessage'] = $e->getMessage();
         }
     }
 
