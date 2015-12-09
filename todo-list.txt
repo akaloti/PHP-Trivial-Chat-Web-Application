@@ -4,6 +4,9 @@ Next steps:
 Things to implement:
 -make menus stack on top of each other
     --user has option to continue session, if applicable, and to log out
+    --improve look of menu buttons and maybe the text fields, too
+-find a way to put the getJSON call and handling into one function
+    --this includes error handling
 -user can type messages and submit them
     --upon submission, that user's last message sent time is updated
 -other logged in users are notified of when someone entered and of

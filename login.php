@@ -1,7 +1,8 @@
 <?php
     session_start();
 
-    include 'dbconnect.php';
+    require 'dbconnect.php';
+    require 'constants.php';
 
     $name = $_GET['name'];
     $pw = $_GET['pw'];
@@ -20,7 +21,7 @@
             if ($result) {
                 $json['success'] = true;
 
-                $_SESSION['name'] = $name;
+                $_SESSION[SESSION_NAME] = $name;
             }
 
             $query->closeCursor();
