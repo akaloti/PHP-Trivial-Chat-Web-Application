@@ -97,6 +97,11 @@ function setUpMainMenuEventHandlers() {
             }
         );
     });
+
+    $("#session-continue").click(function(e) {
+        takeUserToChatRoom();
+        e.preventDefault();
+    });
 }
 
 /**
