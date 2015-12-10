@@ -102,6 +102,13 @@ function setUpMainMenuEventHandlers() {
         takeUserToChatRoom();
         e.preventDefault();
     });
+
+    $("#session-logout").click(function(e) {
+        $.getJSON("logout.php");
+        $("#session").hide(0);
+        $("#login").show(0);
+        e.preventDefault();
+    });
 }
 
 /**

@@ -2,8 +2,8 @@ Next steps:
 -
 
 Things to implement:
--make menus stack on top of each other
-    --user has option to log out
+-improve look of menus
+    --make menus stack on top of each other
     --improve look of menu buttons and maybe the text fields, too
 -find a way to put the getJSON call and handling into one function
     --this includes error handling
