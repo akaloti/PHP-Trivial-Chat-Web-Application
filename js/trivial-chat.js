@@ -40,6 +40,12 @@ function showAppropriateMenu() {
  * have been set up
  */
 function setUpMainMenuEventHandlers() {
+    $("#create-cancel").click(function(e){
+        $("#create").hide(0);
+        $("#login").show(0);
+        e.preventDefault();
+    });
+
     $("#create-create").click(function(e) {
         var username = $("#create-name").val();
         var password = $("#create-pw").val();
@@ -70,6 +76,12 @@ function setUpMainMenuEventHandlers() {
             );
         }
 
+        e.preventDefault();
+    });
+
+    $("#login-create").click(function(e){
+        $("#login").hide(0);
+        $("#create").show(0);
         e.preventDefault();
     });
 

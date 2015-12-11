@@ -1,5 +1,4 @@
 Things to implement:
--make sure all three menus' buttons work
 -find a way to put the getJSON call and handling into one function
     --this includes error handling
 -user can type messages and submit them
