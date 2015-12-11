@@ -127,6 +127,6 @@ function setUpMainMenuEventHandlers() {
  * @post main menu has been hidden; chat room has been shown
  */
 function takeUserToChatRoom() {
-    $(".screen").hide(0);
+    $("#main-menu").hide(0);
     $("#chat-room").show(0);
 }
