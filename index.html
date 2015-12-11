@@ -13,27 +13,42 @@
 <script
     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 </script>
+<link rel="stylesheet" type="text/css" href="css/trivial-chat.css" />
+<link href='https://fonts.googleapis.com/css?family=Inconsolata'
+    rel='stylesheet' type='text/css'>
 
 </head>
 <body>
 
-<div id="beginning" class="screen">
-    <h1>Login</h1>
-    <div>Username: <input id="login-name" type="text" /></div>
-    <div>Password: <input id="login-pw" type="password" /></div>
-    <a id="login-login" href="#">login</a>
-
-    <h1>Create an account</h1>
-    <div>Username (Max 40 characters): <input id="create-name" type="text" />
+<div id="application">
+    <div id="login" class="screen">
+        <h1>Login</h1>
+        <div class="input">Username: <input id="login-name" type="text" />
+        </div>
+        <div class="input">Password: <input id="login-pw" type="password" />
+        </div>
+        <a class="button left" id="login-create" href="#">Create New Account</a>
+        <a class="button right" id="login-login" href="#">Login</a>
     </div>
-    <div>Password (Max 100 characters): <input id="create-pw" type="password" />
+    <div id="session" class="screen">
+        <h1>Welcome back "<span id="session-name"></span>"!</h1>
+        <a class="button" id="session-continue" href="#">Continue</a>
+        <a class="button" id="session-logout" href="#">Logout</a>
     </div>
-    <a id="create-create" href="#">create</a>
-</div>
-<div id="chat-room" class="screen">
-    <ul id="chat-history"></ul>
-    <input type='text' id='chat-input' />
-    <input type='button' value='Send' id='send' />
+    <div id="create" class="screen">
+        <h1>Create an account</h1>
+        <div class="input">Username (Max 40 characters): <input id="create-name" type="text" />
+        </div>
+        <div class="input">Password (Max 100 characters): <input id="create-pw" type="password" />
+        </div>
+        <a class="button left" id="create-cancel" href="#">Cancel</a>
+        <a class="button right" id="create-create" href="#">Create</a>
+    </div>
+    <div id="chat-room" class="screen">
+        <ul id="chat-history"></ul>
+        <input type='text' id='chat-input' />
+        <input type='button' value='Send' id='send' />
+    </div>
 </div>
 
 <script src="js/trivial-chat.js"></script>

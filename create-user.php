@@ -1,7 +1,8 @@
 <?php
     session_start();
 
-    include 'dbconnect.php';
+    require 'dbconnect.php';
+    require 'constants.php';
 
     // JSON object to be returned to $.getJSON calling this file
     $json = array('success'=>false);
@@ -21,7 +22,7 @@
                     VALUES("'.$name.'", "'.$hash.'")';
                 $db->query($queryStr);
 
-                $_SESSION['name'] = $name;
+                $_SESSION[SESSION_NAME] = $name;
 
                 $json['success'] = true;
             }

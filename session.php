@@ -4,24 +4,25 @@
     require 'dbconnect.php';
     require 'constants.php';
 
-    $name = $_GET['name'];
-    $pw = $_GET['pw'];
+    // To return to the caller
+    $json = array('connected'=>false);
 
-    // JSON object to be returned to $.getJSON calling this file
-    $json = array('success'=>false, 'scriptError'=>false);
-
-    if (isset($name) && isset($pw)) {
+    if (isset($_SESSION[SESSION_NAME])) {
         try {
-            $hash = hash('md5', $pw);
-            $queryStr = 'SELECT * FROM users WHERE name = "'.$name.
-                '" AND password = "'.$hash.'"';
+            $name = $_SESSION[SESSION_NAME];
+
+            $queryStr =
+                'SELECT * FROM users WHERE name = "'.$name.'"';
             $query = $db->prepare($queryStr);
             $query->execute();
             $result = $query->fetch();
             if ($result) {
-                $json['success'] = true;
-
-                $_SESSION[SESSION_NAME] = $name;
+                $json['connected'] = true;
+                $json['name'] = $name;
+            }
+            else {
+                session_unset();
+                session_destroy();
             }
 
             $query->closeCursor();

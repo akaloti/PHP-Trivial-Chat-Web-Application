@@ -1,7 +1,50 @@
 "use strict";
 
+var username;
+
 $(document).ready(function() {
-    $("#chat-room").hide(0);
+    showAppropriateMenu();
+    setUpMainMenuEventHandlers();
+});
+
+/**
+ * @post based on session state, either the login menu or the
+ * resume menu has been shown
+ */
+function showAppropriateMenu() {
+    $.getJSON(
+        "session.php",
+        {
+            name: "teehee",
+        },
+        function(json) {
+            if (json.scriptError) {
+                var message = json.scriptErrorMessage;
+                alert(message);
+                console.log(message);
+            }
+            else if (json.connected) {
+                username = json.name;
+                $("#session-name").html(username);
+                $("#session").show(0);
+            }
+            else {
+                $("#login").show(0);
+            }
+        }
+    );
+}
+
+/**
+ * @post event handlers for the three menus (including the hidden ones)
+ * have been set up
+ */
+function setUpMainMenuEventHandlers() {
+    $("#create-cancel").click(function(e){
+        $("#create").hide(0);
+        $("#login").show(0);
+        e.preventDefault();
+    });
 
     $("#create-create").click(function(e) {
         var username = $("#create-name").val();
@@ -23,8 +66,7 @@ $(document).ready(function() {
                 },
                 function(json, status) {
                     if (json.success) {
-                        $("#beginning").hide(0);
-                        $("#chat-room").show(0);
+                        takeUserToChatRoom();
                     }
                     else {
                         alert("Name already taken!");
@@ -37,6 +79,12 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
+    $("#login-create").click(function(e){
+        $("#login").hide(0);
+        $("#create").show(0);
+        e.preventDefault();
+    });
+
     $("#login-login").click(function(e) {
         $.getJSON(
             "login.php",
@@ -46,8 +94,7 @@ $(document).ready(function() {
             },
             function(json, status) {
                 if (json.success) {
-                    $("#beginning").hide(0);
-                    $("#chat-room").show(0);
+                    takeUserToChatRoom();
                 }
                 else if (json.scriptError) {
                     // Report the error from the PHP script
@@ -62,4 +109,24 @@ $(document).ready(function() {
             }
         );
     });
-});
+
+    $("#session-continue").click(function(e) {
+        takeUserToChatRoom();
+        e.preventDefault();
+    });
+
+    $("#session-logout").click(function(e) {
+        $.getJSON("logout.php");
+        $("#session").hide(0);
+        $("#login").show(0);
+        e.preventDefault();
+    });
+}
+
+/**
+ * @post main menu has been hidden; chat room has been shown
+ */
+function takeUserToChatRoom() {
+    $(".screen").hide(0);
+    $("#chat-room").show(0);
+}
