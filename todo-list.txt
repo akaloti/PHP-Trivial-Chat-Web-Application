@@ -1,7 +1,7 @@
 Next:
 -user can type messages and submit them; upon submission:
-    --that user's last message sent time is updated
     --the message is stored in database
+        --put the code that makes this database in setup.php
 -on certain interval, an update function is called:
     --gets the messages that the client hasn't gotten yet, by comparing
     a timestamp stored with client
