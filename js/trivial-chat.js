@@ -24,11 +24,14 @@ function showAppropriateMenu() {
                 console.log(message);
             }
             else if (json.connected) {
+                // There is an active session; ask the user if
+                // she wants to continue it
                 username = json.name;
                 $("#session-name").html(username);
                 $("#session").show(0);
             }
             else {
+                // There's no active session; show login screen
                 $("#login").show(0);
             }
         }
@@ -49,6 +52,7 @@ function setUpMainMenuEventHandlers() {
     $("#create-create").click(function(e) {
         var username = $("#create-name").val();
         var password = $("#create-pw").val();
+        $("#create-pw").val("");
 
         // Check if username or password is too long
         if (username.length > 40)
@@ -70,7 +74,6 @@ function setUpMainMenuEventHandlers() {
                     }
                     else {
                         alert("Name already taken!");
-                        $("#create-pw").val("");
                     }
                 }
             );
@@ -103,8 +106,8 @@ function setUpMainMenuEventHandlers() {
                     console.log(message);
                 }
                 else {
-                    alert("Wrong username or password");
                     $("#login-pw").val("");
+                    alert("Wrong username or password");
                 }
             }
         );
