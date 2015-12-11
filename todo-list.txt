@@ -1,10 +1,5 @@
-Next steps:
--
-
 Things to implement:
--improve look of menus
-    --make menus stack on top of each other
-    --improve look of menu buttons and maybe the text fields, too
+-make sure all three menus' buttons work
 -find a way to put the getJSON call and handling into one function
     --this includes error handling
 -user can type messages and submit them
