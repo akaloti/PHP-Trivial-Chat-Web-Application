@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<div id="application">
+<div id="main-menu">
     <div id="login" class="screen">
         <h1>Login</h1>
         <div class="input">Username: <input id="login-name" type="text" />
@@ -44,11 +44,12 @@
         <a class="button left" id="create-cancel" href="#">Cancel</a>
         <a class="button right" id="create-create" href="#">Create</a>
     </div>
-    <div id="chat-room" class="screen">
-        <ul id="chat-history"></ul>
-        <input type='text' id='chat-input' />
-        <input type='button' value='Send' id='send' />
-    </div>
+</div>
+
+<div id="chat-room">
+    <ul id="chat-history"></ul>
+    <input type="text" id="chat-input" />
+    <a class="button" id="chat-room-submit" href="#">Submit</a>
 </div>
 
 <script src="js/trivial-chat.js"></script>

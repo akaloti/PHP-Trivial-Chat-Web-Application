@@ -1,6 +1,7 @@
 "use strict";
 
-var username;
+var chat = {};
+chat.username;
 
 $(document).ready(function() {
     showAppropriateMenu();
@@ -24,11 +25,14 @@ function showAppropriateMenu() {
                 console.log(message);
             }
             else if (json.connected) {
-                username = json.name;
-                $("#session-name").html(username);
+                // There is an active session; ask the user if
+                // she wants to continue it
+                chat.username = json.name;
+                $("#session-name").html(chat.username);
                 $("#session").show(0);
             }
             else {
+                // There's no active session; show login screen
                 $("#login").show(0);
             }
         }
@@ -49,6 +53,7 @@ function setUpMainMenuEventHandlers() {
     $("#create-create").click(function(e) {
         var username = $("#create-name").val();
         var password = $("#create-pw").val();
+        $("#create-pw").val("");
 
         // Check if username or password is too long
         if (username.length > 40)
@@ -66,11 +71,11 @@ function setUpMainMenuEventHandlers() {
                 },
                 function(json, status) {
                     if (json.success) {
+                        chat.username = username;
                         takeUserToChatRoom();
                     }
                     else {
                         alert("Name already taken!");
-                        $("#create-pw").val("");
                     }
                 }
             );
@@ -86,14 +91,16 @@ function setUpMainMenuEventHandlers() {
     });
 
     $("#login-login").click(function(e) {
+        var username = $("#login-name").val();
         $.getJSON(
             "login.php",
             {
-                name: $("#login-name").val(),
+                name: username,
                 pw: $("#login-pw").val()
             },
             function(json, status) {
                 if (json.success) {
+                    chat.username = username;
                     takeUserToChatRoom();
                 }
                 else if (json.scriptError) {
@@ -103,8 +110,8 @@ function setUpMainMenuEventHandlers() {
                     console.log(message);
                 }
                 else {
-                    alert("Wrong username or password");
                     $("#login-pw").val("");
+                    alert("Wrong username or password");
                 }
             }
         );
@@ -124,9 +131,32 @@ function setUpMainMenuEventHandlers() {
 }
 
 /**
- * @post main menu has been hidden; chat room has been shown
+ * @post main menu has been hidden; chat room has been shown;
+ * any other appropriate functions have been called
  */
 function takeUserToChatRoom() {
-    $(".screen").hide(0);
+    $("#main-menu").hide(0);
     $("#chat-room").show(0);
+    setUpChatRoomEventHandlers();
+}
+
+/**
+ * @post event handlers for the chat room have been set up
+ */
+function setUpChatRoomEventHandlers() {
+    $("#chat-room-submit").click(function(e) {
+        $.getJSON("send-message.php",
+        {
+            user: chat.username,
+            message: $("#chat-input").val()
+        },
+        function(json, status) {
+            if (json.scriptError) {
+                var message = json.scriptErrorMessage;
+                alert(message);
+                console.log(message);
+            }
+        });
+        $("#chat-input").val("");
+    });
 }
