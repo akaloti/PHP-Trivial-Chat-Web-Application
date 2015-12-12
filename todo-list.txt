@@ -1,14 +1,17 @@
 Next:
 -user can type messages and submit them; upon submission:
+    --don't have sending a message update the "lastupdate" column anymore
     --the message is stored in database
-        --put the code that makes this database in setup.php
--on certain interval, an update function is called:
-    --gets the messages that the client hasn't gotten yet, by comparing
-    a timestamp stored with client
-    --updates the timestamp
--other logged in users are notified of when someone entered and of
-when that newly entered person last sent a message (unless he's a
-new user)
+    --specify max message length to user; could say remaining characters
+-getting others' messages to the user:
+    --update the user's lastupdate when he logs in, so that he only
+    gets messages that were sent after he logged in
+    --on certain interval, an update function is called:
+        --gets the messages that the client hasn't gotten yet, by comparing
+        a timestamp stored with client
+        --updates the timestamp
+-other logged in users are notified of when someone entered; this
+notification is simply added to the messages
 -user can log out of chat room
 
 Considerable:
