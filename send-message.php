@@ -10,8 +10,8 @@
     $json = array();
 
     try {
-        $sql = 'INSERT INTO messages (name, message) VALUES ("'
-            .$name.'", "'.$message.'")';
+        $sql = 'INSERT INTO messages (name, message, time) VALUES ("'
+            .$name.'", "'.$message.'", NOW())';
         // Use exec() because no results are returned
         $stmt = $db->exec($sql);
         $stmt->closeCursor();

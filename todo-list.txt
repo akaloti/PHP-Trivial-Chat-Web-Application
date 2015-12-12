@@ -1,7 +1,9 @@
 Next:
 -user can type messages and submit them; upon submission:
-    --store the message's timestamp in database
-    --specify max message length to user; could say remaining characters
+    --regarding max message length:
+        --specify max message length to user
+            --could say remaining characters
+        --reject messages that are too long
 -getting others' messages to the user:
     --update the user's lastupdate when he logs in, so that he only
     gets messages that were sent after he logged in

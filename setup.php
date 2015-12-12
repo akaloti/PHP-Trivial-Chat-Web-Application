@@ -17,8 +17,10 @@
          * @password the user's password
          * @lastupdate the last time that the user received others' messages
          */
-        $queryStr = "CREATE TABLE users (name VARCHAR(".$usernameSize."),
-            password VARCHAR(100), lastupdate timestamp DEFAULT NULL)";
+        $queryStr = "CREATE TABLE users (
+            name VARCHAR(".$usernameSize."),
+            password VARCHAR(100),
+            lastupdate timestamp DEFAULT NULL)";
         $db->query($queryStr);
 
         /**
@@ -27,9 +29,12 @@
          * Columns:
          * @name the user who sent the message
          * @message the content of the message
+         * @time the time at which the message was sent
          */
-        $queryStr = "CREATE TABLE messages (name VARCHAR(".$usernameSize."),
-            message VARCHAR(1000))";
+        $queryStr = "CREATE TABLE messages (
+            name VARCHAR(".$usernameSize."),
+            message VARCHAR(1000),
+            time timestamp DEFAULT NULL)";
         $db->query($queryStr);
     }
     catch (PDOException $e) {
