@@ -1,7 +1,6 @@
 Next:
 -getting others' messages to the user:
-    --update the user's lastupdate when he logs in, so that he only
-    gets messages that were sent after he logged in
+    --also update user's lastupdate for newly created accounted
     --on certain interval, an update function is called:
         --gets the messages that the client hasn't gotten yet, by comparing
         a timestamp stored with client
