@@ -20,7 +20,7 @@
         $queryStr = "CREATE TABLE users (
             name VARCHAR(".$usernameSize."),
             password VARCHAR(100),
-            lastupdate timestamp DEFAULT NULL)";
+            lastupdate TIMESTAMP DEFAULT NULL)";
         $db->query($queryStr);
 
         /**
@@ -33,8 +33,8 @@
          */
         $queryStr = "CREATE TABLE messages (
             name VARCHAR(".$usernameSize."),
-            message VARCHAR(1000),
-            time timestamp DEFAULT NULL)";
+            message MEDIUMTEXT,
+            time TIMESTAMP DEFAULT NULL)";
         $db->query($queryStr);
     }
     catch (PDOException $e) {
