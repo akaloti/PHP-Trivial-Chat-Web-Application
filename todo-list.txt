@@ -1,7 +1,6 @@
 Next:
 -user can type messages and submit them; upon submission:
-    --don't have sending a message update the "lastupdate" column anymore
-    --the message is stored in database
+    --store the message's timestamp in database
     --specify max message length to user; could say remaining characters
 -getting others' messages to the user:
     --update the user's lastupdate when he logs in, so that he only
@@ -13,6 +12,7 @@ Next:
 -other logged in users are notified of when someone entered; this
 notification is simply added to the messages
 -user can log out of chat room
+-remove chat messages that can no longer be seen by anyone
 
 Considerable:
 -look into better password hashing options
