@@ -12,19 +12,29 @@
 
     if (isset($name) && isset($pw)) {
         try {
+            // Search for username-password combination
             $hash = hash('md5', $pw);
             $queryStr = 'SELECT * FROM users WHERE name = "'.$name.
                 '" AND password = "'.$hash.'"';
             $query = $db->prepare($queryStr);
             $query->execute();
             $result = $query->fetch();
-            if ($result) {
-                $json['success'] = true;
+            $query->closeCursor();
 
+            if ($result) {
+                // Successful login
+                $json['success'] = true;
                 $_SESSION[SESSION_NAME] = $name;
+
+                // Update user's "lastupdate" timestamp, so he/she
+                // doesn't get messages he/she wasn't present for
+                $queryStr = 'UPDATE users SET lastupdate=NOW()
+                    WHERE name="'.$name.'"';
+                $query = $db->prepare($queryStr);
+                $query->execute();
+                $query->closeCursor();
             }
 
-            $query->closeCursor();
         }
         catch (PDOException $e) {
             // Send the error message back to the webpage
