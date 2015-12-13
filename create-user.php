@@ -12,18 +12,20 @@
 
     if (isset($name) && isset($pw)) {
         try {
+            // Check if the given username already exists
             $hash = hash('md5', $pw);
             $queryStr = 'SELECT * FROM users WHERE name = "'.$name.'"';
             $query = $db->prepare($queryStr);
             $query->execute();
             $result = $query->fetch();
+
             if (!$result) {
-                $queryStr = 'INSERT INTO users (name, password)
-                    VALUES("'.$name.'", "'.$hash.'")';
+                // the user doesn't already exist; create it
+                $queryStr = 'INSERT INTO users (name, password, lastupdate)
+                    VALUES("'.$name.'", "'.$hash.'", NOW())';
                 $db->query($queryStr);
 
                 $_SESSION[SESSION_NAME] = $name;
-
                 $json['success'] = true;
             }
 
