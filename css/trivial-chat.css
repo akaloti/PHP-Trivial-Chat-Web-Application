@@ -98,3 +98,8 @@ input {
 body {
     background: black;
 }
+
+li {
+    color: white;
+    font-size: 20px;
+}

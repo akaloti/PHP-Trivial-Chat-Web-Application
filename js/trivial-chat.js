@@ -2,6 +2,8 @@
 
 var chat = {};
 chat.username;
+chat.updateHistoryInterval;
+chat.updatePeriod = 1500; // how often to run the interval function
 
 $(document).ready(function() {
     showAppropriateMenu();
@@ -132,12 +134,15 @@ function setUpMainMenuEventHandlers() {
 
 /**
  * @post main menu has been hidden; chat room has been shown;
- * any other appropriate functions have been called
+ * any other appropriate functions have been called to help
+ * set up the chat room
  */
 function takeUserToChatRoom() {
     $("#main-menu").hide(0);
     $("#chat-room").show(0);
     setUpChatRoomEventHandlers();
+    chat.updateHistoryInterval =
+        setInterval(updateChatHistory, chat.updatePeriod);
 }
 
 /**
@@ -159,4 +164,24 @@ function setUpChatRoomEventHandlers() {
         });
         $("#chat-input").val("");
     });
+}
+
+/**
+ * @post the new chat messages have been obtained and shown to this
+ * user
+ */
+function updateChatHistory() {
+    $.getJSON("update-chat-history.php",
+        function(json, status) {
+            if (json.scriptError) {
+                var message = json.scriptErrorMessage;
+                console.log(message);
+            }
+            else {
+                console.log(json);
+                for (var i in json)
+                    $("#chat-history").append("<li>" + json[i]["name"] +
+                        " said: " + json[i]["message"]);
+            }
+        });
 }
