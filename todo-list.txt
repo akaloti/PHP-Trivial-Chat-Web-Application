@@ -13,3 +13,5 @@ Next:
 
 Considerable:
 -remove chat messages that can no longer be seen by anyone
+-remove storing of chat username in JavaScript code (since it's already
+stored in PHP session)

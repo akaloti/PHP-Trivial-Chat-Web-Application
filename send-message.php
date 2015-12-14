@@ -2,8 +2,9 @@
     session_start();
 
     require 'dbconnect.php';
+    require 'constants.php';
 
-    $name = $_GET['user'];
+    $name = $_SESSION[SESSION_NAME];
     $message = $_GET['message'];
 
     // To return to the caller

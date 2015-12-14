@@ -174,7 +174,6 @@ function takeUserToChatRoom() {
 function sendMessage() {
     $.getJSON("send-message.php",
         {
-            user: chat.username,
             message: $("#chat-input").val()
         },
         function(json, status) {
