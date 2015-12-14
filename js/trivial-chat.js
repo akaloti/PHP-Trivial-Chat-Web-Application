@@ -79,6 +79,36 @@ function submitCreateUser() {
 }
 
 /**
+ * @post user's attempt at logging in has been accepted or rejected
+ */
+function submitLoginAttempt() {
+    var username = $("#login-name").val();
+    $.getJSON(
+        "login.php",
+        {
+            name: username,
+            pw: $("#login-pw").val()
+        },
+        function(json, status) {
+            if (json.success) {
+                chat.username = username;
+                takeUserToChatRoom();
+            }
+            else if (json.scriptError) {
+                // Report the error from the PHP script
+                var message = json.scriptErrorMessage;
+                alert(message);
+                console.log(message);
+            }
+            else {
+                $("#login-pw").val("");
+                alert("Wrong username or password");
+            }
+        }
+    );
+}
+
+/**
  * @post event handlers for the three menus (including the hidden ones)
  * have been set up
  */
@@ -103,31 +133,12 @@ function setUpMainMenuEventHandlers() {
         e.preventDefault();
     });
 
-    $("#login-login").click(function(e) {
-        var username = $("#login-name").val();
-        $.getJSON(
-            "login.php",
-            {
-                name: username,
-                pw: $("#login-pw").val()
-            },
-            function(json, status) {
-                if (json.success) {
-                    chat.username = username;
-                    takeUserToChatRoom();
-                }
-                else if (json.scriptError) {
-                    // Report the error from the PHP script
-                    var message = json.scriptErrorMessage;
-                    alert(message);
-                    console.log(message);
-                }
-                else {
-                    $("#login-pw").val("");
-                    alert("Wrong username or password");
-                }
-            }
-        );
+    // Two ways to login: click button or press Enter in either
+    // text field
+    $("#login-login").click(submitLoginAttempt);
+    $("#login-name, #login-pw").keypress(function(e) {
+        if (e.keyCode === ENTER_KEY_PRESS)
+            submitLoginAttempt();
     });
 
     $("#session-continue").click(function(e) {
