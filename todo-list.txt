@@ -1,6 +1,6 @@
 Next:
--other logged in users are notified of when someone entered; this
-notification is simply added to the messages
+-fix bug of not being able to put certain characters in message
+    --use SQL parameters
 -user can log out of chat room and go back to main menu
     --make sure to clear the update interval
 -figure out why some messages aren't properly transferred

@@ -33,10 +33,15 @@
                 $query = $db->prepare($queryStr);
                 $query->execute();
                 $query->closeCursor();
-            }
 
+                // Create a message that says that this user logged in
+                $queryStr = 'INSERT INTO messages (name, message, time)
+                    VALUES ("SERVER", "'.$name.' logged in.", NOW())';
+                // Use exec() because no results are returned
+                $db->exec($queryStr);
+            }
         }
-        catch (PDOException $e) {
+        catch (Exception $e) {
             // Send the error message back to the webpage
             $json['scriptError'] = true;
             $json['scriptErrorMessage'] = $e->getMessage();

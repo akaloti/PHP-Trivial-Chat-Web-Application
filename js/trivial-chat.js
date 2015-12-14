@@ -90,15 +90,15 @@ function submitLoginAttempt() {
             pw: $("#login-pw").val()
         },
         function(json, status) {
-            if (json.success) {
-                chat.username = username;
-                takeUserToChatRoom();
-            }
-            else if (json.scriptError) {
+            if (json.scriptError) {
                 // Report the error from the PHP script
                 var message = json.scriptErrorMessage;
                 alert(message);
                 console.log(message);
+            }
+            else if (json.success) {
+                chat.username = username;
+                takeUserToChatRoom();
             }
             else {
                 $("#login-pw").val("");
@@ -142,6 +142,7 @@ function setUpMainMenuEventHandlers() {
     });
 
     $("#session-continue").click(function(e) {
+        $.getJSON("continue-session-message.php");
         takeUserToChatRoom();
         e.preventDefault();
     });
