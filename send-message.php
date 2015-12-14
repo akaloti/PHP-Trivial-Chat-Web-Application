@@ -2,18 +2,22 @@
     session_start();
 
     require 'dbconnect.php';
+    require 'constants.php';
 
-    $name = $_GET['user'];
+    $name = $_SESSION[SESSION_NAME];
     $message = $_GET['message'];
 
     // To return to the caller
     $json = array();
 
     try {
+        // Use parameters so that message can have characters such
+        // as quotation marks in them
         $sql = 'INSERT INTO messages (name, message, time) VALUES ("'
-            .$name.'", "'.$message.'", NOW())';
-        // Use exec() because no results are returned
-        $db->exec($sql);
+            .$name.'", :message, NOW())';
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':message', $message);
+        $stmt->execute();
     }
     catch (Exception $e) {
         // Make sure to send the error message back to the webpage
