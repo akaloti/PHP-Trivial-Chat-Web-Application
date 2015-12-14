@@ -5,6 +5,8 @@ chat.username;
 chat.updateHistoryInterval;
 chat.updatePeriod = 1500; // how often to run the interval function
 
+var ENTER_KEY_PRESS = 13;
+
 $(document).ready(function() {
     showAppropriateMenu();
     setUpMainMenuEventHandlers();
@@ -42,6 +44,41 @@ function showAppropriateMenu() {
 }
 
 /**
+ * User's attempt to create a new account has been handled
+ */
+function submitCreateUser() {
+    var username = $("#create-name").val();
+    var password = $("#create-pw").val();
+    $("#create-pw").val("");
+
+    // Check if username or password is too long
+    if (username.length > 40)
+        alert("Username is too long");
+    else if (password.length > 100)
+        alert("Password is too long");
+    else {
+        // Have the server create the account if unique username or note
+        // error to user otherwise
+        $.getJSON(
+            "create-user.php",
+            {
+                name: username,
+                pw: password
+            },
+            function(json, status) {
+                if (json.success) {
+                    chat.username = username;
+                    takeUserToChatRoom();
+                }
+                else {
+                    alert("Name already taken!");
+                }
+            }
+        );
+    }
+}
+
+/**
  * @post event handlers for the three menus (including the hidden ones)
  * have been set up
  */
@@ -52,38 +89,12 @@ function setUpMainMenuEventHandlers() {
         e.preventDefault();
     });
 
-    $("#create-create").click(function(e) {
-        var username = $("#create-name").val();
-        var password = $("#create-pw").val();
-        $("#create-pw").val("");
-
-        // Check if username or password is too long
-        if (username.length > 40)
-            alert("Username is too long");
-        else if (password.length > 100)
-            alert("Password is too long");
-        else {
-            // Have the server create the account if unique username or note
-            // error to user otherwise
-            $.getJSON(
-                "create-user.php",
-                {
-                    name: username,
-                    pw: password
-                },
-                function(json, status) {
-                    if (json.success) {
-                        chat.username = username;
-                        takeUserToChatRoom();
-                    }
-                    else {
-                        alert("Name already taken!");
-                    }
-                }
-            );
-        }
-
-        e.preventDefault();
+    // Two ways to create a user: click button or press Enter in
+    // either text field
+    $("#create-create").click(submitCreateUser);
+    $("#create-name, #create-pw").keypress(function(e) {
+        if (e.keyCode === ENTER_KEY_PRESS)
+            submitCreateUser();
     });
 
     $("#login-create").click(function(e){
@@ -173,8 +184,7 @@ function setUpChatRoomEventHandlers() {
     // Set up the two ways to send a message
     $("#chat-room-submit").click(sendMessage);
     $("#chat-input").keypress(function(e) {
-        // '13' is 'Enter' key
-        if (e.keyCode === 13)
+        if (e.keyCode === ENTER_KEY_PRESS)
             sendMessage();
     });
 }
