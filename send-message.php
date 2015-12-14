@@ -13,8 +13,7 @@
         $sql = 'INSERT INTO messages (name, message, time) VALUES ("'
             .$name.'", "'.$message.'", NOW())';
         // Use exec() because no results are returned
-        $stmt = $db->exec($sql);
-        $stmt->closeCursor();
+        $db->exec($sql);
     }
     catch (Exception $e) {
         // Make sure to send the error message back to the webpage
