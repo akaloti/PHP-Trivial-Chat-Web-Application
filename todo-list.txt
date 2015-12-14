@@ -1,6 +1,4 @@
 Next:
--make Enter key in any text field result in clicking of a certain button
-(whichever of the two buttons makes more sense)
 -other logged in users are notified of when someone entered; this
 notification is simply added to the messages
 -user can log out of chat room and go back to main menu
