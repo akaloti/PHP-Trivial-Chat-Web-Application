@@ -142,6 +142,7 @@ function setUpMainMenuEventHandlers() {
     });
 
     $("#session-continue").click(function(e) {
+        $.getJSON("continue-session-message.php");
         takeUserToChatRoom();
         e.preventDefault();
     });
