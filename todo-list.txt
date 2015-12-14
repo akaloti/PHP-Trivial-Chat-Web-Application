@@ -1,15 +1,14 @@
 Next:
 -make Enter key in any text field result in clicking of a certain button
 (whichever of the two buttons makes more sense)
--figure out why some messages aren't properly transferred
 -other logged in users are notified of when someone entered; this
 notification is simply added to the messages
-    --make sure user isn't notified that he himself logged in in chat history
--user can log out of chat room
+-user can log out of chat room and go back to main menu
     --make sure to clear the update interval
--remove chat messages that can no longer be seen by anyone
+-figure out why some messages aren't properly transferred
+    --could give each message an id and have lastupdate store the last
+    message id instead; at least for checking if multiple access of
+    the database is the problem
 
 Considerable:
--look into better password hashing options
--find a way to put the getJSON call and handling into one function
-    --this includes error handling
+-remove chat messages that can no longer be seen by anyone
