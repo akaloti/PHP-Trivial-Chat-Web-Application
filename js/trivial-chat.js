@@ -146,11 +146,10 @@ function takeUserToChatRoom() {
 }
 
 /**
- * @post event handlers for the chat room have been set up
+ * @post client's message has been sent to server
  */
-function setUpChatRoomEventHandlers() {
-    $("#chat-room-submit").click(function(e) {
-        $.getJSON("send-message.php",
+function sendMessage() {
+    $.getJSON("send-message.php",
         {
             user: chat.username,
             message: $("#chat-input").val()
@@ -162,7 +161,21 @@ function setUpChatRoomEventHandlers() {
                 console.log(message);
             }
         });
-        $("#chat-input").val("");
+
+    // Clear message input field
+    $("#chat-input").val("");
+}
+
+/**
+ * @post event handlers for the chat room have been set up
+ */
+function setUpChatRoomEventHandlers() {
+    // Set up the two ways to send a message
+    $("#chat-room-submit").click(sendMessage);
+    $("#chat-input").keypress(function(e) {
+        // '13' is 'Enter' key
+        if (e.keyCode === 13)
+            sendMessage();
     });
 }
 
