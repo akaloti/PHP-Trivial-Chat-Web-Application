@@ -103,3 +103,11 @@ li {
     color: white;
     font-size: 20px;
 }
+
+#chat-input {
+    margin-bottom: 20px;
+}
+
+#chat-room-logout {
+    margin-left: 1px;
+}

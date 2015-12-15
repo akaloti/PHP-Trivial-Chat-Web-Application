@@ -1,7 +1,6 @@
 "use strict";
 
 var chat = {};
-chat.username;
 chat.updateHistoryInterval;
 chat.updatePeriod = 1500; // how often to run the interval function
 
@@ -31,8 +30,7 @@ function showAppropriateMenu() {
             else if (json.connected) {
                 // There is an active session; ask the user if
                 // she wants to continue it
-                chat.username = json.name;
-                $("#session-name").html(chat.username);
+                $("#session-name").html(json.name);
                 $("#session").show(0);
             }
             else {
@@ -67,7 +65,6 @@ function submitCreateUser() {
             },
             function(json, status) {
                 if (json.success) {
-                    chat.username = username;
                     takeUserToChatRoom();
                 }
                 else {
@@ -97,7 +94,6 @@ function submitLoginAttempt() {
                 console.log(message);
             }
             else if (json.success) {
-                chat.username = username;
                 takeUserToChatRoom();
             }
             else {
@@ -198,6 +194,24 @@ function setUpChatRoomEventHandlers() {
         if (e.keyCode === ENTER_KEY_PRESS)
             sendMessage();
     });
+
+    $("#chat-room-logout").click(logoutChatRoom);
+}
+
+/**
+ * @post user's logging out of chatroom has been properly handled
+ */
+function logoutChatRoom() {
+    // Get out of the chat room
+    $.getJSON("logout.php");
+    $("#chat-room").hide(0);
+    clearInterval(chat.updateHistoryInterval);
+
+    // Properly set up main menu
+    $(".screen").hide(0);
+    $("input").val("");
+    $("#main-menu").show(0);
+    showAppropriateMenu();
 }
 
 /**

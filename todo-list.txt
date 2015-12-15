@@ -1,15 +1,12 @@
 Next:
--user can log out of chat room and go back to main menu
-    --make sure to clear the update interval
 -figure out why some messages aren't properly transferred
     --could give each message an id and have lastupdate store the last
     message id instead; at least for checking if multiple access of
     the database is the problem
+-figure out why two messages are sent in place of one
 
 Considerable:
 -remove chat messages that can no longer be seen by anyone
--remove storing of chat username in JavaScript code (since it's already
-stored in PHP session)
 -make username case-sensitive
 -fix bug of not being able to put certain characters in usernames/passwords
     --use SQL parameters
