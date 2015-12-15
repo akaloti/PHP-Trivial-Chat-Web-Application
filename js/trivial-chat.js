@@ -198,6 +198,24 @@ function setUpChatRoomEventHandlers() {
         if (e.keyCode === ENTER_KEY_PRESS)
             sendMessage();
     });
+
+    $("#chat-room-logout").click(logoutChatRoom);
+}
+
+/**
+ * @post user's logging out of chatroom has been properly handled
+ */
+function logoutChatRoom() {
+    // Get out of the chat room
+    $.getJSON("logout.php");
+    $("#chat-room").hide(0);
+    clearInterval(chat.updateHistoryInterval);
+
+    // Properly set up main menu
+    $(".screen").hide(0);
+    $("input").val("");
+    $("#main-menu").show(0);
+    showAppropriateMenu();
 }
 
 /**
