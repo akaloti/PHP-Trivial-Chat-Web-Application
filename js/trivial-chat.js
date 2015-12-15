@@ -9,6 +9,7 @@ var ENTER_KEY_PRESS = 13;
 $(document).ready(function() {
     showAppropriateMenu();
     setUpMainMenuEventHandlers();
+    setUpChatRoomEventHandlers();
 });
 
 /**
@@ -159,7 +160,6 @@ function setUpMainMenuEventHandlers() {
 function takeUserToChatRoom() {
     $("#main-menu").hide(0);
     $("#chat-room").show(0);
-    setUpChatRoomEventHandlers();
     chat.updateHistoryInterval =
         setInterval(updateChatHistory, chat.updatePeriod);
 }

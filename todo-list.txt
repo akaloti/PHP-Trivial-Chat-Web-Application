@@ -3,7 +3,6 @@ Next:
     --could give each message an id and have lastupdate store the last
     message id instead; at least for checking if multiple access of
     the database is the problem
--figure out why two messages are sent in place of one
 
 Considerable:
 -remove chat messages that can no longer be seen by anyone
