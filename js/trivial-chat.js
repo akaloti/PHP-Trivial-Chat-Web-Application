@@ -202,6 +202,8 @@ function setUpChatRoomEventHandlers() {
  * @post user's logging out of chatroom has been properly handled
  */
 function logoutChatRoom() {
+    $("#chat-history").empty();
+
     // Get out of the chat room
     $.getJSON("logout.php");
     $("#chat-room").hide(0);
