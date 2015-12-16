@@ -19,7 +19,6 @@
             id int NOT NULL AUTO_INCREMENT,
             name varchar(".MAX_USERNAME.") NOT NULL,
             message mediumtext NOT NULL,
-            UNIQUE (name),
             PRIMARY KEY (id)
             )";
         $db->query($queryStr);

@@ -1,7 +1,5 @@
 Next:
 -figure out why some messages aren't properly transferred
-    --adjust insertions into messages table appropriately
-    --each message in messages has id
     --when user logs in (in any of the three ways), the highest id
     in messages is set as user's "last received message id" in
     JavaScript part of the code

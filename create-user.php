@@ -21,18 +21,18 @@
 
             if (!$result) {
                 // the user doesn't already exist; create it
-                $queryStr = 'INSERT INTO users (name, password, lastupdate)
-                    VALUES("'.$name.'", "'.$hash.'", NOW())';
+                $queryStr = 'INSERT INTO users (name, password)
+                    VALUES("'.$name.'", "'.$hash.'")';
                 $db->query($queryStr);
+
+                // Create a message that says that this user logged in
+                $queryStr = 'INSERT INTO messages (name, message)
+                    VALUES ("SERVER", "New user '.$name.' logged in.")';
+                // Use exec() because no results are returned
+                $db->exec($queryStr);
 
                 $_SESSION[SESSION_NAME] = $name;
                 $json['success'] = true;
-
-                // Create a message that says that this user logged in
-                $queryStr = 'INSERT INTO messages (name, message, time)
-                    VALUES ("SERVER", "New user '.$name.' logged in.", NOW())';
-                // Use exec() because no results are returned
-                $db->exec($queryStr);
             }
 
             $query->closeCursor();

@@ -13,6 +13,15 @@ $(document).ready(function() {
 });
 
 /**
+ * @param message the error message
+ */
+function showPhpError(message) {
+    var errorMessage = "PHP Error: " + message;
+    alert(errorMessage);
+    console.log(errorMessage);
+}
+
+/**
  * @post based on session state, either the login menu or the
  * resume menu has been shown
  */
@@ -23,11 +32,8 @@ function showAppropriateMenu() {
             name: "teehee",
         },
         function(json) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else if (json.connected) {
                 // There is an active session; ask the user if
                 // she wants to continue it

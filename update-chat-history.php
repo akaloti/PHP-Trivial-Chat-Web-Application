@@ -3,6 +3,7 @@
 
     require 'dbconnect.php';
     require 'constants.php';
+    require 'utility.php';
 
     $name = $_SESSION[SESSION_NAME];
 

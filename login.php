@@ -3,6 +3,7 @@
 
     require 'dbconnect.php';
     require 'constants.php';
+    require 'utility.php';
 
     $name = $_GET['name'];
     $pw = $_GET['pw'];
@@ -26,25 +27,15 @@
                 $json['success'] = true;
                 $_SESSION[SESSION_NAME] = $name;
 
-                // Update user's "lastupdate" timestamp, so he/she
-                // doesn't get messages he/she wasn't present for
-                $queryStr = 'UPDATE users SET lastupdate=NOW()
-                    WHERE name="'.$name.'"';
-                $query = $db->prepare($queryStr);
-                $query->execute();
-                $query->closeCursor();
-
                 // Create a message that says that this user logged in
-                $queryStr = 'INSERT INTO messages (name, message, time)
-                    VALUES ("SERVER", "'.$name.' logged in.", NOW())';
+                $queryStr = 'INSERT INTO messages (name, message)
+                    VALUES ("SERVER", "'.$name.' logged in.")';
                 // Use exec() because no results are returned
                 $db->exec($queryStr);
             }
         }
         catch (Exception $e) {
-            // Send the error message back to the webpage
-            $json['scriptError'] = true;
-            $json['scriptErrorMessage'] = $e->getMessage();
+            storeError($json, $e);
         }
     }
 

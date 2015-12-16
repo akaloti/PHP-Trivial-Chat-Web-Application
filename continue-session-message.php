@@ -8,13 +8,11 @@
 
     try {
         // Create a message that says that this user logged in
-        $queryStr = 'INSERT INTO messages (name, message, time)
-            VALUES ("SERVER", "'.$name.' logged in.", NOW())';
+        $queryStr = 'INSERT INTO messages (name, message)
+            VALUES ("SERVER", "'.$name.' logged in.")';
         // Use exec() because no results are returned
         $db->exec($queryStr);
     }
     catch (Exception $e) {
-        // Make sure to send the error message back to the webpage
-        $json['scriptError'] = true;
-        $json['scriptErrorMessage'] = $e->getMessage();
+        echo $e->getMessage();
     }
