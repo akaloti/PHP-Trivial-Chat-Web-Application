@@ -1,7 +1,5 @@
 Next:
--figure out why some messages aren't properly transferred
-    --update-chat-history.php uses that id to get all the messages
-        --success callback updates "last received message id"
+NOTHING
 
 Considerable:
 -remove chat messages that can no longer be seen by anyone

@@ -228,18 +228,28 @@ function logoutChatRoom() {
 
 /**
  * @post the new chat messages have been obtained and shown to this
- * user
+ * user; "last message id" has been updated
  */
 function updateChatHistory() {
-    $.getJSON("update-chat-history.php",
+    $.getJSON(
+        "update-chat-history.php",
+        {
+            lastId: chat.lastMessageId
+        },
         function(json, status) {
             if (json.scriptError)
                 showPhpError(json.scriptErrorMessage);
             else {
-                console.log(json);
-                for (var i in json)
-                    $("#chat-history").append("<li>" + json[i]["name"] +
-                        " said: " + json[i]["message"]);
+                // If an id was returned, then update client's
+                // "last message id"; otherwise, shouldn't update
+                if (json.lastId)
+                    chat.lastMessageId = parseInt(json.lastId);
+
+                // Show the user the messages
+                var messages = json.messages;
+                for (var i in messages)
+                    $("#chat-history").append("<li>" + messages[i]["name"] +
+                        " said: " + messages[i]["message"]);
             }
         });
 }
