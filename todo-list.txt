@@ -1,8 +1,12 @@
 Next:
 -figure out why some messages aren't properly transferred
-    --could give each message an id and have lastupdate store the last
-    message id instead; at least for checking if multiple access of
-    the database is the problem
+    --adjust insertions into messages table appropriately
+    --each message in messages has id
+    --when user logs in (in any of the three ways), the highest id
+    in messages is set as user's "last received message id" in
+    JavaScript part of the code
+    --update-chat-history.php uses that id to get all the messages
+        --success callback updates "last received message id"
 
 Considerable:
 -remove chat messages that can no longer be seen by anyone
