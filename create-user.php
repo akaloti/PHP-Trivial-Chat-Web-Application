@@ -3,6 +3,7 @@
 
     require 'dbconnect.php';
     require 'constants.php';
+    require 'utility.php';
 
     // JSON object to be returned to $.getJSON calling this file
     $json = array('success'=>false);
@@ -30,6 +31,9 @@
                     VALUES ("SERVER", "New user '.$name.' logged in.")';
                 // Use exec() because no results are returned
                 $db->exec($queryStr);
+
+                // Make sure user sees no messages he wasn't there for
+                storeHighestId($json, $db);
 
                 $_SESSION[SESSION_NAME] = $name;
                 $json['success'] = true;

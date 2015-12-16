@@ -9,7 +9,7 @@
     $pw = $_GET['pw'];
 
     // JSON object to be returned to $.getJSON calling this file
-    $json = array('success'=>false, 'scriptError'=>false);
+    $json = array('success'=>false);
 
     if (isset($name) && isset($pw)) {
         try {
@@ -23,15 +23,18 @@
             $query->closeCursor();
 
             if ($result) {
-                // Successful login
-                $json['success'] = true;
-                $_SESSION[SESSION_NAME] = $name;
-
                 // Create a message that says that this user logged in
                 $queryStr = 'INSERT INTO messages (name, message)
                     VALUES ("SERVER", "'.$name.' logged in.")';
                 // Use exec() because no results are returned
                 $db->exec($queryStr);
+
+                // Make sure user sees no messages he wasn't there for
+                storeHighestId($json, $db);
+
+                // Successful login
+                $json['success'] = true;
+                $_SESSION[SESSION_NAME] = $name;
             }
         }
         catch (Exception $e) {

@@ -3,6 +3,7 @@
 var chat = {};
 chat.updateHistoryInterval;
 chat.updatePeriod = 1500; // how often to run the interval function
+chat.lastMessageId = 0;
 
 var ENTER_KEY_PRESS = 13;
 
@@ -72,6 +73,7 @@ function submitCreateUser() {
             },
             function(json, status) {
                 if (json.success) {
+                    chat.lastMessageId = parseInt(json.lastId);
                     takeUserToChatRoom();
                 }
                 else {
@@ -94,13 +96,10 @@ function submitLoginAttempt() {
             pw: $("#login-pw").val()
         },
         function(json, status) {
-            if (json.scriptError) {
-                // Report the error from the PHP script
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else if (json.success) {
+                chat.lastMessageId = parseInt(json.lastId);
                 takeUserToChatRoom();
             }
             else {
@@ -145,7 +144,15 @@ function setUpMainMenuEventHandlers() {
     });
 
     $("#session-continue").click(function(e) {
-        $.getJSON("continue-session-message.php");
+        $.getJSON(
+            "continue-session.php",
+            function(json, status) {
+                if (json.scriptError)
+                    showPhpError(json.scriptErrorMessage);
+                else
+                    chat.lastMessageId = parseInt(json.lastId);
+            }
+        );
         takeUserToChatRoom();
         e.preventDefault();
     });
@@ -179,11 +186,8 @@ function sendMessage() {
             message: $("#chat-input").val()
         },
         function(json, status) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
         });
 
     // Clear message input field
@@ -229,10 +233,8 @@ function logoutChatRoom() {
 function updateChatHistory() {
     $.getJSON("update-chat-history.php",
         function(json, status) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else {
                 console.log(json);
                 for (var i in json)
