@@ -3,42 +3,34 @@
 
     require 'dbconnect.php';
     require 'constants.php';
+    require 'utility.php';
 
     $name = $_SESSION[SESSION_NAME];
+    $lastId = $_GET['lastId'];
 
     // JSON object to be returned to caller
-    $newMessages = array();
+    $json = array('messages'=>array());
 
     try {
-        // Get the time that this client last received messages
-        $query = $db->prepare('SELECT * FROM users WHERE name="'.$name.'"');
-        $query->execute();
-        $lastUpdate = $query->fetch()['lastupdate'];
-        $query->closeCursor();
-
         // Obtain the messages that this user hasn't seen
         $query = $db->prepare('SELECT * FROM messages WHERE
-            time > ?');
-        $params = array($lastUpdate);
+            id > ?');
+        $params = array($lastId);
         $query->execute($params);
-        for ($i = 0; $row = $query->fetch(); $i++)
-            $newMessages[] = array('name'=>$row['name'],
+        for ($i = 0; $row = $query->fetch(); $i++) {
+            $json['messages'][] = array('name'=>$row['name'],
                 'message'=>$row['message']);
-        $query->closeCursor();
 
-        // Update this user's lastupdate timestamp
-        $query = $db->prepare('UPDATE users SET lastupdate=NOW()
-            WHERE name="'.$name.'"');
-        $query->execute();
+            // Make sure client is told the most recent message's id;
+            // assume highest id is in last row
+            $json['lastId'] = $row['id'];
+        }
         $query->closeCursor();
     }
     catch (Exception $e) {
-        // Make sure to send the error message back to the webpage
-        $newMessages['scriptError'] = true;
-        $newMessages['scriptErrorMessage'] = $e->getMessage();
+        storeError($json, $e);
     }
 
-    $query->closeCursor();
     $db = null;
 
-    echo json_encode($newMessages);
+    echo json_encode($json);

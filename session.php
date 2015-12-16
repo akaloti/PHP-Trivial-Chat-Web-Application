@@ -3,6 +3,7 @@
 
     require 'dbconnect.php';
     require 'constants.php';
+    require 'utility.php';
 
     // To return to the caller
     $json = array('connected'=>false);
@@ -27,10 +28,8 @@
 
             $query->closeCursor();
         }
-        catch (PDOException $e) {
-            // Send the error message back to the webpage
-            $json['scriptError'] = true;
-            $json['scriptErrorMessage'] = $e->getMessage();
+        catch (Exception $e) {
+            storeError($json, $e);
         }
     }
 

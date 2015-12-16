@@ -3,13 +3,24 @@
 var chat = {};
 chat.updateHistoryInterval;
 chat.updatePeriod = 1500; // how often to run the interval function
+chat.lastMessageId = 0;
 
 var ENTER_KEY_PRESS = 13;
 
 $(document).ready(function() {
     showAppropriateMenu();
     setUpMainMenuEventHandlers();
+    setUpChatRoomEventHandlers();
 });
+
+/**
+ * @param message the error message
+ */
+function showPhpError(message) {
+    var errorMessage = "PHP Error: " + message;
+    alert(errorMessage);
+    console.log(errorMessage);
+}
 
 /**
  * @post based on session state, either the login menu or the
@@ -22,11 +33,8 @@ function showAppropriateMenu() {
             name: "teehee",
         },
         function(json) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else if (json.connected) {
                 // There is an active session; ask the user if
                 // she wants to continue it
@@ -65,6 +73,7 @@ function submitCreateUser() {
             },
             function(json, status) {
                 if (json.success) {
+                    chat.lastMessageId = parseInt(json.lastId);
                     takeUserToChatRoom();
                 }
                 else {
@@ -87,13 +96,10 @@ function submitLoginAttempt() {
             pw: $("#login-pw").val()
         },
         function(json, status) {
-            if (json.scriptError) {
-                // Report the error from the PHP script
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else if (json.success) {
+                chat.lastMessageId = parseInt(json.lastId);
                 takeUserToChatRoom();
             }
             else {
@@ -138,7 +144,15 @@ function setUpMainMenuEventHandlers() {
     });
 
     $("#session-continue").click(function(e) {
-        $.getJSON("continue-session-message.php");
+        $.getJSON(
+            "continue-session.php",
+            function(json, status) {
+                if (json.scriptError)
+                    showPhpError(json.scriptErrorMessage);
+                else
+                    chat.lastMessageId = parseInt(json.lastId);
+            }
+        );
         takeUserToChatRoom();
         e.preventDefault();
     });
@@ -159,7 +173,6 @@ function setUpMainMenuEventHandlers() {
 function takeUserToChatRoom() {
     $("#main-menu").hide(0);
     $("#chat-room").show(0);
-    setUpChatRoomEventHandlers();
     chat.updateHistoryInterval =
         setInterval(updateChatHistory, chat.updatePeriod);
 }
@@ -173,11 +186,8 @@ function sendMessage() {
             message: $("#chat-input").val()
         },
         function(json, status) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                alert(message);
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
         });
 
     // Clear message input field
@@ -202,6 +212,8 @@ function setUpChatRoomEventHandlers() {
  * @post user's logging out of chatroom has been properly handled
  */
 function logoutChatRoom() {
+    $("#chat-history").empty();
+
     // Get out of the chat room
     $.getJSON("logout.php");
     $("#chat-room").hide(0);
@@ -216,20 +228,28 @@ function logoutChatRoom() {
 
 /**
  * @post the new chat messages have been obtained and shown to this
- * user
+ * user; "last message id" has been updated
  */
 function updateChatHistory() {
-    $.getJSON("update-chat-history.php",
+    $.getJSON(
+        "update-chat-history.php",
+        {
+            lastId: chat.lastMessageId
+        },
         function(json, status) {
-            if (json.scriptError) {
-                var message = json.scriptErrorMessage;
-                console.log(message);
-            }
+            if (json.scriptError)
+                showPhpError(json.scriptErrorMessage);
             else {
-                console.log(json);
-                for (var i in json)
-                    $("#chat-history").append("<li>" + json[i]["name"] +
-                        " said: " + json[i]["message"]);
+                // If an id was returned, then update client's
+                // "last message id"; otherwise, shouldn't update
+                if (json.lastId)
+                    chat.lastMessageId = parseInt(json.lastId);
+
+                // Show the user the messages
+                var messages = json.messages;
+                for (var i in messages)
+                    $("#chat-history").append("<li>" + messages[i]["name"] +
+                        " said: " + messages[i]["message"]);
             }
         });
 }
