@@ -1,0 +1,11 @@
+Next:
+NOTHING
+
+Considerable:
+-remove chat messages that can no longer be seen by anyone
+-make username case-sensitive
+-fix bug of not being able to put certain characters in usernames/passwords
+    --use SQL parameters
+    --apply to:
+        --logging in
+        --creating user
