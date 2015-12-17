@@ -8,7 +8,7 @@ JavaScript, jQuery, CSS, and HTML. I wrote it in the December of my
 freshman year in college.
 
 A demonstrative YouTube video can be found here:
-https://www.youtube.com/watch?v=ffvH2SA8BEQ
+https://www.youtube.com/watch?v=1X3_LPSLCB4
 
 Features
 --------
