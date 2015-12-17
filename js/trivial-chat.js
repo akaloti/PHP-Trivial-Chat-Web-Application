@@ -2,7 +2,7 @@
 
 var chat = {};
 chat.updateHistoryInterval;
-chat.updatePeriod = 1500; // how often to run the interval function
+chat.updatePeriod = 500; // how often to run the interval function
 chat.lastMessageId = 0;
 
 var ENTER_KEY_PRESS = 13;
